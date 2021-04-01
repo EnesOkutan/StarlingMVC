@@ -18,8 +18,8 @@ public class UserModel {
     public var signed:Boolean;
 
     public function login(username:String, password:String):void {
-        this.signed = true;
         if (userService.login(username, password)) {
+            this.signed = true;
             this.username = username;
             this.password = password;
             eventDispatch.dispatchEvent(new LoginEvent(LoginEvent.LOGIN_SUCCESSFUL));
@@ -29,8 +29,8 @@ public class UserModel {
     }
 
     public function logout():void {
-        this.signed = false;
         if (userService.logout()) {
+            this.signed = false;
             eventDispatch.dispatchEvent(new LoginEvent(LoginEvent.LOGOUT_SUCCESSFUL));
         }
     }
