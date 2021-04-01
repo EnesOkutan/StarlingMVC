@@ -1,39 +1,35 @@
 package mediator {
 
-import event.SignInEvent;
-import starling.events.Event;
 import robotlegs.bender.bundles.mvcs.Mediator;
 
-import signal.UserErrorSignal;
-import signal.UserLoginedSignal;
 import model.UserModel;
 import view.LoginView;
+import event.LoginEvent;
 
 public class LoginViewMediator extends Mediator {
 
     [Inject]
-    public var model:UserModel;
+    public var userModel:UserModel;
 
     [Inject]
     public var loginView:LoginView;
 
-    [Inject]
-    public var loginSignal:UserLoginedSignal;
-
-    [Inject]
-    public var errorSignal:UserErrorSignal;
-
     public override function initialize():void {
-        loginView.addEventListener("login", submitLogin);
-        errorSignal.add(errorLogin)
+        eventMap.mapListener(eventDispatcher, LoginEvent.LOGIN_FAIL, onLoginError);
+        loginView.loginSignal.add(onLogin);
     }
 
-    private function errorLogin():void {
+    public override function destroy():void {
+        eventMap.unmapListeners();
+        loginView.loginSignal.removeAll()
+    }
+
+    private function onLoginError(event:LoginEvent):void {
         loginView.showAlert();
     }
 
-    private function submitLogin(event:Event):void {
-        eventDispatcher.dispatchEvent(new SignInEvent(loginView.getUsername(), loginView.getPassword()))
+    private function onLogin(username:String, password:String):void {
+        userModel.login(username, password)
     }
 
 }

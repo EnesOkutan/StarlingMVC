@@ -9,10 +9,14 @@ import feathers.data.ArrayCollection;
 import feathers.layout.VerticalLayout;
 import feathers.themes.MetalWorksMobileTheme;
 
+import org.osflash.signals.Signal;
+
 import starling.display.Sprite;
 import starling.events.Event;
 
 public class LoginView extends Sprite{
+
+    public var loginSignal:Signal = new Signal(String, String);
 
     private var usernameInput:TextInput;
     private var passwordInput:TextInput;
@@ -62,15 +66,7 @@ public class LoginView extends Sprite{
     }
     
     private function submitLogin(event:Event):void {
-        dispatchEvent(new Event("login"));
-    }
-
-    public function getUsername():String {
-        return this.usernameInput.text;
-    }
-
-    public function getPassword():String {
-        return this.passwordInput.text;
+        loginSignal.dispatch(usernameInput.text, passwordInput.text)
     }
 
     public function showAlert():void {
@@ -92,7 +88,7 @@ public class LoginView extends Sprite{
         alert.width = 220
         alert.height = 250
         return alert;
-    };
+    }
 
 
 }

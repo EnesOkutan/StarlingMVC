@@ -7,10 +7,14 @@ import feathers.data.ArrayCollection;
 import feathers.layout.VerticalLayout;
 import feathers.themes.MetalWorksMobileTheme;
 
+import org.osflash.signals.Signal;
+
 import starling.display.Sprite;
 import starling.events.Event;
 
 public class HomeView extends Sprite {
+
+    public var logoutSignal:Signal = new Signal();
 
     private var button:Button;
     private var alert:Alert;
@@ -52,7 +56,7 @@ public class HomeView extends Sprite {
     }
 
     private function submitLogout():void {
-        dispatchEvent(new Event("logout"));
+        this.logoutSignal.dispatch();
     }
 
     private function disposeAlert():void {

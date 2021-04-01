@@ -2,32 +2,28 @@ package mediator {
 
 import robotlegs.bender.bundles.mvcs.Mediator;
 
-import signal.UserLoginedSignal;
-import signal.UserLogoutSignal;
-
 import view.MainView;
+import event.LoginEvent;
 
 public class MainViewMediator extends Mediator{
 
     [Inject]
     public var mainView:MainView;
 
-    [Inject]
-    public var loginSignal:UserLoginedSignal;
-
-    [Inject]
-    public var logoutSignal:UserLogoutSignal;
-
     public override function initialize():void {
-        loginSignal.add(login);
-        logoutSignal.add(logout)
+        eventMap.mapListener(eventDispatcher, LoginEvent.LOGIN_SUCCESSFUL, onLoginSuccessful);
+        eventMap.mapListener(eventDispatcher, LoginEvent.LOGOUT_SUCCESSFUL, onLogoutSuccessful);
     }
 
-    private function login():void {
+    public override function destroy():void {
+        eventMap.unmapListeners();
+    }
+
+    private function onLoginSuccessful(event:LoginEvent):void {
         mainView.showHomePage()
     }
 
-    private function logout():void {
+    private function onLogoutSuccessful(event:LoginEvent):void {
         mainView.showLoginPage()
     }
 }

@@ -25,13 +25,15 @@ public class MainView extends Sprite{
     }
 
     public function showLoginPage():void {
-        homeView.removeFromParent();
-        addChild(loginView)
+        homeView.removeFromParent(true);
+        loginView = new LoginView();
+        addChild(loginView);
     }
 
     public function showHomePage():void {
-        loginView.removeFromParent()
-        addChild(homeView)
+        loginView.removeFromParent(true);
+        homeView = new HomeView();
+        addChild(homeView);
     }
 
 }

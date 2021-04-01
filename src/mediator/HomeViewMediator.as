@@ -1,28 +1,29 @@
 package mediator {
-import event.SignOutEvent;
 
-import model.UserModel;
-
-import robotlegs.extensions.starlingViewMap.impl.StarlingMediator;
-
-import starling.events.Event;
+import robotlegs.bender.bundles.mvcs.Mediator;
 
 import view.HomeView;
+import model.UserModel;
 
-public class HomeViewMediator extends StarlingMediator {
-
-    [Inject]
-    public var model:UserModel;
+public class HomeViewMediator extends Mediator {
 
     [Inject]
-    public var mainView:HomeView;
+    public var userModel:UserModel;
+
+    [Inject]
+    public var homeView:HomeView;
 
     public override function initialize():void {
-        mainView.addEventListener("logout", submitLogout)
+        homeView.logoutSignal.add(onLogout)
     }
 
-    private function submitLogout(event:Event):void {
-        eventDispatcher.dispatchEvent(new SignOutEvent())
+    public override function destroy():void {
+        eventMap.unmapListeners();
+        homeView.logoutSignal.removeAll();
+    }
+
+    private function onLogout():void {
+        userModel.logout();
     }
 
 }

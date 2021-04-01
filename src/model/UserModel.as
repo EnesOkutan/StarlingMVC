@@ -1,8 +1,9 @@
 package model {
+
 import flash.events.IEventDispatcher;
 
-import signal.UserLoginedSignal;
-import signal.UserLogoutSignal;
+import service.UserService;
+import event.LoginEvent;
 
 public class UserModel {
 
@@ -10,27 +11,28 @@ public class UserModel {
     public var eventDispatch:IEventDispatcher;
 
     [Inject]
-    public var loginSignal:UserLoginedSignal;
+    public var userService:UserService;
 
-    [Inject]
-    public var logoutSignal:UserLogoutSignal;
-
-    public var username:String = "username";
-    public var password:String = "password";
+    public var username:String;
+    public var password:String;
     public var signed:Boolean;
 
-    [PostConstruct]
-    public function mapSignalListeners():void {
-        loginSignal.add(login);
-        logoutSignal.add(logout);
-    }
-
-    private function login():void {
+    public function login(username:String, password:String):void {
         this.signed = true;
+        if (userService.login(username, password)) {
+            this.username = username;
+            this.password = password;
+            eventDispatch.dispatchEvent(new LoginEvent(LoginEvent.LOGIN_SUCCESSFUL));
+        } else {
+            eventDispatch.dispatchEvent(new LoginEvent(LoginEvent.LOGIN_FAIL));
+        }
     }
 
-    private function logout():void {
+    public function logout():void {
         this.signed = false;
+        if (userService.logout()) {
+            eventDispatch.dispatchEvent(new LoginEvent(LoginEvent.LOGOUT_SUCCESSFUL));
+        }
     }
 
 }
