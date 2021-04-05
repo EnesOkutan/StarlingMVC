@@ -18,6 +18,7 @@ public class UserModel {
     public var signed:Boolean;
     public var invalidLoginCount:int;
     public var blockTime:int = 10000;
+    public var maxLoginCount:int = 3;
 
     public function login(username:String, password:String):void {
         if (userService.login(username, password)) {
