@@ -10,6 +10,8 @@ public class LoginEvent extends Event{
     public static const LOGOUT:String = "LoginEvent/LOGOUT";
     public static const LOGOUT_SUCCESSFUL:String = "LoginEvent/LOGOUT_SUCCESSFUL";
 
+    public static const BLOCK_USER:String = "LoginEvent/BLOCK_USER"
+
     public var args:Object;
     public var extras:Object;
 

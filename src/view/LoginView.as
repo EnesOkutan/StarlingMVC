@@ -90,6 +90,13 @@ public class LoginView extends Sprite{
         return alert;
     }
 
+    public function disableForm():void {
+        submitButton.touchable = false;
+    }
+
+    public function enableForm():void {
+        submitButton.touchable = true;
+    }
 
 }
 }

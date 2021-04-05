@@ -16,6 +16,8 @@ public class UserModel {
     public var username:String;
     public var password:String;
     public var signed:Boolean;
+    public var invalidLoginCount:int;
+    public var blockTime:int = 10000;
 
     public function login(username:String, password:String):void {
         if (userService.login(username, password)) {

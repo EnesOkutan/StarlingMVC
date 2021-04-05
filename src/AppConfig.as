@@ -1,5 +1,10 @@
 package {
 
+import command.LoginFailCommand;
+
+import event.LoginEvent;
+
+import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 import robotlegs.bender.framework.api.IConfig;
 import robotlegs.bender.framework.api.IInjector;
@@ -23,6 +28,9 @@ public class AppConfig implements IConfig {
     [Inject]
     public var mediatorMap:IMediatorMap;
 
+    [Inject]
+    public var commandMap:IEventCommandMap;
+
     public function configure():void
     {
         //Map mediators
@@ -35,6 +43,9 @@ public class AppConfig implements IConfig {
 
         //Inject services
         injector.map(UserService).asSingleton();
+
+        //Command mapping
+        commandMap.map(LoginEvent.LOGIN_FAIL).toCommand(LoginFailCommand);
 
     }
 
